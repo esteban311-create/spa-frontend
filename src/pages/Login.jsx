@@ -13,15 +13,15 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
-    
+
         try {
             const response = await loginUser({ correo, password });
             console.log('Respuesta del servidor:', response);
-    
+
             const usuario = response?.usuario;
             console.log('Usuario obtenido:', usuario); // Ahora debería mostrar el objeto completo
             console.log('Tipo de response:', typeof response);
-console.log('Response keys:', Object.keys(response || {}));
+            console.log('Response keys:', Object.keys(response || {}));
 
             if (usuario?.nombre) {
                 localStorage.setItem('nombreUsuario', usuario.nombre);
@@ -29,19 +29,19 @@ console.log('Response keys:', Object.keys(response || {}));
             } else {
                 setError("No se pudo obtener el nombre del usuario.");
             }
-            
+
         } catch (err) {
             console.error('Error al iniciar sesión:', err);
             setError(err.response?.data?.message || "Error al procesar la solicitud.");
         }
     };
-    
-    
+
+
     return (
         <div className="min-h-screen bg-gradient-to-b from-white to-[#f5f5f5] flex items-center justify-center">
             <div className="bg-white shadow-lg rounded-lg p-8 max-w-sm w-full">
                 <img
-                    src="/logo.png" // Asegúrate de que el logo esté en la carpeta public
+                    src="/logo.png"
                     alt="SPA Me lo Merezco"
                     className="mx-auto w-24 mb-6"
                 />
@@ -77,16 +77,16 @@ console.log('Response keys:', Object.keys(response || {}));
                     )}
                     <div className="mb-4">
                         <label
-                            htmlFor="email"
+                            htmlFor="correo"
                             className="block text-sm font-semibold text-gray-700"
                         >
                             Correo Electrónico
                         </label>
                         <input
                             type="email"
-                            id="email"
+                            id="correo"
                             value={correo}
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={(e) => setCorreo(e.target.value)}  // <-- CORRECTO
                             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#d4af37]"
                             placeholder="ejemplo@correo.com"
                         />
