@@ -11,7 +11,7 @@ function Register() {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("https://spabackend-6769.onrender.com/api/auth/register", {
+      await axios.post("https://spabackend-6769.onrender.com/api/usuarios", {
         nombre,
         correo,
         password,
