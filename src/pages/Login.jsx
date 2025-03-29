@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { registerUser, loginUser } from "../services/userService";
 
 function Login() {
-    const [email, setEmail] = useState("");
+    const [correo, setCorreo] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [isRegistering, setIsRegistering] = useState(false);
@@ -15,7 +15,7 @@ function Login() {
         setError("");
     
         try {
-            const response = await loginUser({ email, password });
+            const response = await loginUser({ correo, password });
             console.log('Respuesta del servidor:', response);
     
             const usuario = response?.usuario;
