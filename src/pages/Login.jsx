@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registerUser, loginUser } from "../services/userService";
+import { toast } from 'react-toastify';
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -13,28 +14,29 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
-
+    
         try {
-            const response = await loginUser({ email, password });
-            console.log('Respuesta del servidor:', response);
-
-            const usuario = response?.usuario;
-            console.log('Usuario obtenido:', usuario); // Ahora debería mostrar el objeto completo
-            console.log('Tipo de response:', typeof response);
-            console.log('Response keys:', Object.keys(response || {}));
-
-            if (usuario?.nombre) {
-                localStorage.setItem('nombreUsuario', usuario.nombre);
-                navigate("/dashboard");
+            if (isRegistering) {
+                await registerUser({ nombre: name, email, password });
+                toast.success("Usuario registrado exitosamente");
+                setIsRegistering(false); // Pasar al modo login
             } else {
-                setError("No se pudo obtener el nombre del usuario.");
+                const response = await loginUser({ email, password });
+                const usuario = response?.usuario;
+    
+                if (usuario?.nombre) {
+                    localStorage.setItem('usuario', JSON.stringify(usuario));
+                    navigate("/dashboard");
+                } else {
+                    setError("No se pudo obtener el nombre del usuario.");
+                }
             }
-
         } catch (err) {
-            console.error('Error al iniciar sesión:', err);
+            console.error("Error:", err);
             setError(err.response?.data?.message || "Error al procesar la solicitud.");
         }
     };
+    
 
 
     return (
