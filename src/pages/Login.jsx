@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { registerUser, loginUser } from "../services/userService";
 
 function Login() {
-    const [correo, setCorreo] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [isRegistering, setIsRegistering] = useState(false);
@@ -15,7 +15,7 @@ function Login() {
         setError("");
 
         try {
-            const response = await loginUser({ correo, password });
+            const response = await loginUser({ email, password });
             console.log('Respuesta del servidor:', response);
 
             const usuario = response?.usuario;
@@ -77,18 +77,18 @@ function Login() {
                     )}
                     <div className="mb-4">
                         <label
-                            htmlFor="correo"
+                            htmlFor="email"
                             className="block text-sm font-semibold text-gray-700"
                         >
                             Correo Electrónico
                         </label>
                         <input
                             type="email"
-                            id="correo"
-                            value={correo}
-                            onChange={(e) => setCorreo(e.target.value)}  // <-- CORRECTO
+                            id="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}  // <-- CORRECTO
                             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#d4af37]"
-                            placeholder="ejemplo@correo.com"
+                            placeholder="ejemplo@email.com"
                         />
                     </div>
                     <div className="mb-4">
