@@ -29,7 +29,7 @@ const Dashboard = () => {
   const [showEmpleadoModal, setShowEmpleadoModal] = useState(false);
   const [showServicioModal, setShowServicioModal] = useState(false);
   const [servicios, setServicios] = useState([]);
-
+  const API_URL = import.meta.env.VITE_API_URL;
   const [nuevoEmpleado, setNuevoEmpleado] = useState({
     nombre: '',
     correo: '',
@@ -53,7 +53,7 @@ const Dashboard = () => {
 
   const fetchMetrics = async (period, month) => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/dashboard/reportes/${period}?mes=${month}`);
+      const res = await axios.get(`${API_URL}/api/dashboard/reportes/${period}?mes=${month}`);
       const citas = res.data.citas || [];
 
       const citasPorEstado = citas.reduce((acc, cita) => {
@@ -90,7 +90,7 @@ const Dashboard = () => {
 
   const fetchServicios = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/servicios");
+      const response = await axios.get(`${API_URL}/api/servicios`);
       setServicios(response.data);
     } catch (error) {
       console.error("Error al obtener servicios:", error);
@@ -120,7 +120,7 @@ const Dashboard = () => {
   };
   const exportarClientes = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/clientes"); // Ajusta si usas otra ruta
+      const res = await axios.get(`${API_URL}/api/clientes`);
       const clientes = res.data;
   
       const datosFormateados = clientes.map((cliente) => ({
