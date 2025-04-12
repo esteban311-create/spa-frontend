@@ -3,6 +3,8 @@ import React from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const ModalEmpleado = ({ empleado, setEmpleado, onClose, onSaveSuccess }) => {
   const handleCrearEmpleado = async () => {
     if (!empleado.nombre) {
@@ -11,7 +13,7 @@ const ModalEmpleado = ({ empleado, setEmpleado, onClose, onSaveSuccess }) => {
     }
 
     try {
-      await axios.post('http://localhost:5000/api/empleados', empleado);
+      await axios.post(`${API_URL}/api/empleados`, empleado);
       onSaveSuccess();
     } catch (error) {
       console.error('Error al crear empleado:', error);

@@ -2,6 +2,7 @@
 import React from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const ModalServicio = ({ servicio, setServicio, servicios, setServicios, onClose, onSaveSuccess }) => {
   const handleCrearServicio = async () => {
@@ -11,7 +12,8 @@ const ModalServicio = ({ servicio, setServicio, servicios, setServicios, onClose
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/servicios', servicio);
+      const response = await axios.post(`${API_URL}/api/servicios`, servicio);
+
       setServicios([...servicios, response.data]);
       onSaveSuccess();
     } catch (error) {
