@@ -48,7 +48,7 @@ function Agenda() {
 
   const cargarDatos = async () => {
     try {
-        const { data } = await axios.get("http://localhost:5000/api/citas");
+      const { data } = await axios.get(`${API_URL}/api/citas`);
         console.log("Datos recibidos del backend:", data);
 
         const citasFormateadas = data.map((cita) => {
@@ -95,7 +95,8 @@ function Agenda() {
 
   const cargarClientes = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/api/clientes");
+      const { data } = await axios.get(`${API_URL}/api/clientes`);
+
       setClientes(data);
     } catch (error) {
       toast.error("Error al cargar clientes");
@@ -104,7 +105,8 @@ function Agenda() {
 
   const cargarEmpleados = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/api/empleados");
+      const { data } = await axios.get(`${API_URL}/api/empleados`);
+
       setEmpleados(data);
     } catch (error) {
       toast.error("Error al cargar empleados");
@@ -113,7 +115,7 @@ function Agenda() {
 
   const crearCliente = async (cliente) => {
     try {
-        const response = await axios.post("http://localhost:5000/api/clientes", {
+      const response = await axios.post(`${API_URL}/api/clientes`, {
             nombre: cliente.nombre,
             correo: cliente.correo,
             telefono: cliente.telefono,
@@ -132,7 +134,7 @@ function Agenda() {
 
 const confirmarCita = async (idCita) => {
     try {
-        const response = await axios.post("https://e467-181-51-32-26.ngrok-free.app/api/whatsapp", {
+      const response = await axios.post(`${API_URL}/api/whatsapp`, {
             telefono: citaSeleccionada.telefono,
             mensaje: `¡Hola! ¿Deseas confirmar tu cita para ${citaSeleccionada.fecha} a las ${citaSeleccionada.horaInicio}? Responde con "Confirmar" o "Reprogramar".`
         });
@@ -148,7 +150,7 @@ const confirmarCita = async (idCita) => {
 
 const enviarMensajeConfirmacion = async (telefono, cita) => {
     try {
-        await axios.post("http://localhost:5000/api/whatsapp", {
+      await axios.post(`${API_URL}/api/whatsapp`, {
             telefono: `whatsapp:${telefono}`,
             mensaje: `¡Hola! Tu cita para ${cita.title.split(" - ")[0]} ha sido confirmada para el día ${new Date(cita.start).toLocaleDateString()} a las ${new Date(cita.start).toLocaleTimeString()}. ¡Te esperamos en el spa!`,
         });
@@ -163,7 +165,7 @@ const enviarMensajeConfirmacion = async (telefono, cita) => {
   const handleCrearCita = async () => {
     try {
       const { fecha, horaInicio, horaFin, clienteId, servicioId, empleadoId } = nuevaCita;
-      await axios.post("http://localhost:5000/api/citas", { fecha, horaInicio, horaFin, clienteId, servicioId, empleadoId });
+      await axios.post(`${API_URL}/api/citas`, { fecha, horaInicio, horaFin, clienteId, servicioId, empleadoId });
       toast.success("Cita creada exitosamente");
       setShowModal(false);
       cargarDatos();
@@ -178,7 +180,7 @@ const enviarMensajeConfirmacion = async (telefono, cita) => {
     }
   
     try {
-      const response = await axios.post("http://localhost:5000/api/pagos", {
+      const response = await axios.post(`${API_URL}/api/pagos`, {
         id_cita: citaSeleccionada.id,
         monto: montoPago,
         metodo_pago: metodoPago,
