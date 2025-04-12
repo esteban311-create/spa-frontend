@@ -20,6 +20,7 @@ function Agenda() {
   const [montoPago, setMontoPago] = useState("");
   const [metodoPago, setMetodoPago] = useState("");
   const [showCitaDetalles, setShowCitaDetalles] = useState(false);
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const [nuevoCliente, setNuevoCliente] = useState({
     nombre: "",
