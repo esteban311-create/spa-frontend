@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { getClientes } from "../utils/api";
-
+const API_URL = import.meta.env.VITE_API_URL;
 const ClienteForm = ({ setClientes, setShowClienteForm }) => {
   const [nuevoCliente, setNuevoCliente] = useState({
     nombre: "",
@@ -19,7 +19,7 @@ const ClienteForm = ({ setClientes, setShowClienteForm }) => {
     }
 
     try {
-      await axios.post("http://localhost:5000/api/clientes", nuevoCliente);
+      await axios.post(`${API_URL}/api/clientes`, nuevoCliente);
       toast.success("Cliente creado exitosamente");
       const clientesActualizados = await getClientes();
       setClientes(clientesActualizados);

@@ -21,6 +21,7 @@ function Agenda() {
   const [metodoPago, setMetodoPago] = useState("");
   const [showCitaDetalles, setShowCitaDetalles] = useState(false);
   const API_URL = import.meta.env.VITE_API_URL;
+  const [servicios, setServicios] = useState([]);
 
   const [nuevoCliente, setNuevoCliente] = useState({
     nombre: "",
@@ -44,9 +45,19 @@ function Agenda() {
     cargarDatos();
     cargarClientes();
     cargarEmpleados();
+    fetchServicios();
     
   }, []);
 
+  const fetchServicios = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/api/servicios`);
+      setServicios(response.data);
+    } catch (error) {
+      console.error("Error al cargar los servicios:", error);
+      toast.error("Error al cargar servicios");
+    }
+  };
   const cargarDatos = async () => {
     try {
       const { data } = await axios.get(`${API_URL}/api/citas`);
@@ -163,17 +174,31 @@ const enviarMensajeConfirmacion = async (telefono, cita) => {
     }
 };
 
-  const handleCrearCita = async () => {
-    try {
-      const { fecha, horaInicio, horaFin, clienteId, servicioId, empleadoId } = nuevaCita;
-      await axios.post(`${API_URL}/api/citas`, { fecha, horaInicio, horaFin, clienteId, servicioId, empleadoId });
-      toast.success("Cita creada exitosamente");
-      setShowModal(false);
-      cargarDatos();
-    } catch (error) {
-      toast.error(`Error: ${error.response?.data?.error || "No se pudo crear la cita"}`);
-    }
-  };
+const handleCrearCita = async () => {
+  try {
+    const { fecha, horaInicio, horaFin, clienteId, servicioId, empleadoId } = nuevaCita;
+
+    const response = await axios.post(`${API_URL}/api/citas`, {
+      fecha,
+      horaInicio,
+      horaFin,
+      clienteId,
+      servicioId,
+      empleadoId
+    });
+
+    console.log("✅ Respuesta del backend:", response.data);
+    toast.success("Cita creada exitosamente");
+
+    setShowModal(false);
+    cargarDatos();
+
+  } catch (error) {
+    console.error("❌ Error al crear la cita:", error.response?.data || error.message);
+    toast.error(`Error: ${error.response?.data?.error || "No se pudo crear la cita"}`);
+  }
+};
+
   const registrarPago = async () => {
     if (!montoPago || !metodoPago) {
       toast.error("Debe ingresar el monto y seleccionar un método de pago");
@@ -322,8 +347,26 @@ const enviarMensajeConfirmacion = async (telefono, cita) => {
                     {empleado.nombre}
                   </option>
                 ))}
+                
+                
               </select>
             </div>
+            <div className="mb-4">
+  <label className="block text-sm font-semibold">Servicio:</label>
+  <select
+    className="w-full border px-2 py-1 rounded"
+    value={nuevaCita.servicioId}
+    onChange={(e) => setNuevaCita({ ...nuevaCita, servicioId: parseInt(e.target.value) })}
+  >
+    <option value="">Selecciona un servicio</option>
+    {servicios.map((servicio) => (
+      <option key={servicio.id} value={servicio.id}>
+        {servicio.nombre}
+      </option>
+    ))}
+  </select>
+</div>
+
             <button className="bg-green-500 text-white py-2 px-4 rounded-md" onClick={handleCrearCita}>
               Crear Cita
             </button>
