@@ -145,20 +145,21 @@ function Agenda() {
 };
 
 const confirmarCita = async (idCita) => {
-    try {
-      const response = await axios.post(`${API_URL}/api/whatsapp`, {
-            telefono: citaSeleccionada.telefono,
-            mensaje: `¡Hola! ¿Deseas confirmar tu cita para ${citaSeleccionada.fecha} a las ${citaSeleccionada.horaInicio}? Responde con "Confirmar" o "Reprogramar".`
-        });
+  try {
+    const response = await axios.post(`${API_URL}/api/webhook`, {
+      From: `whatsapp:${citaSeleccionada.telefono}`,
+      Body: "Confirmar"
+    });
 
-        if (response.data.success) {
-            toast.success("Mensaje de confirmación enviado. Esperando respuesta del cliente...");
-        }
-    } catch (error) {
-        console.error("Error enviando mensaje de confirmación:", error);
-        toast.error("Hubo un problema enviando el mensaje.");
+    if (response.data.success) {
+      toast.success("Cita confirmada exitosamente");
     }
+  } catch (error) {
+    console.error("Error confirmando cita:", error);
+    toast.error("Error al confirmar la cita");
+  }
 };
+
 
 const enviarMensajeConfirmacion = async (telefono, cita) => {
     try {
